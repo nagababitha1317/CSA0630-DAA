@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+#define MAX 100
+
+int solution[MAX]; // Array to store the solution
+int n; // Number of elements in the set
+int targetSum; // Target sum to achieve
+
+// Function to print the subset that forms the target sum
+void printSubset(int subsetSize) {
+    printf("Subset with sum %d: ", targetSum);
+    for (int i = 0; i < subsetSize; i++) {
+        printf("%d ", solution[i]);
+    }
+    printf("\n");
+}
+
+// Function to perform backtracking to find subsets with sum equal to targetSum
+void subsetSum(int set[], int subsetSize, int sum, int nextIndex) {
+    if (sum == targetSum) {
+        printSubset(subsetSize);
+        return;
+    }
+
+    for (int i = nextIndex; i < n; i++) {
+        if (sum + set[i] <= targetSum) {
+            solution[subsetSize] = set[i];
+            subsetSum(set, subsetSize + 1, sum + set[i], i + 1);
+        }
+    }
+}
+
+int main() {
+    int set[MAX];
+    
+    // Input the number of elements in the set
+    printf("Enter the number of elements in the set: ");
+    scanf("%d", &n);
+    
+    // Input the set elements
+    printf("Enter the elements of the set: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &set[i]);
+    }
+    
+    // Input the target sum
+    printf("Enter the target sum: ");
+    scanf("%d", &targetSum);
+    
+    printf("Subsets with sum %d:\n", targetSum);
+    subsetSum(set, 0, 0, 0);
+    
+    return 0;
+}
