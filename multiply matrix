@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <time.h>
+
+#define N 100
+
+// Function to multiply two matrices
+void multiplyMatrices(int mat1[][N], int mat2[][N], int res[][N], int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            res[i][j] = 0;
+            for (int k = 0; k < n; k++) {
+                res[i][j] += mat1[i][k] * mat2[k][j];
+            }
+        }
+    }
+}
+
+int main() {
+    int mat1[N][N], mat2[N][N], res[N][N];
+    int n;
+
+    printf("Enter the size of the square matrices (max %d): ", N);
+    scanf("%d", &n);
+
+    // Fill matrices with random values (for simplicity)
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            mat1[i][j] = i + j; // Or any other value
+            mat2[i][j] = i * j; // Or any other value
+        }
+    }
+
+    clock_t start_time = clock(); // Start measuring time
+
+    multiplyMatrices(mat1, mat2, res, n);
+
+    clock_t end_time = clock(); // End measuring time
+
+    double time_taken = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("Time taken to multiply two %dx%d matrices: %lf seconds\n", n, n, time_taken);
+
+    return 0;
+}
