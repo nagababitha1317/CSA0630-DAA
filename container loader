@@ -1,0 +1,68 @@
+#include <stdio.h>
+
+#define MAX_ITEMS 100
+#define MAX_CONTAINERS 100
+
+// Structure to represent an item
+struct Item {
+    int weight;
+};
+
+// Structure to represent a container
+struct Container {
+    int capacity;
+    int currentWeight;
+};
+
+// Function to load items into containers
+void loadContainers(struct Item items[], int numItems, struct Container containers[], int numContainers) {
+    int containerIndex = 0;
+    for (int i = 0; i < numItems; i++) {
+        if (containers[containerIndex].currentWeight + items[i].weight <= containers[containerIndex].capacity) {
+            containers[containerIndex].currentWeight += items[i].weight;
+            printf("Item %d loaded into container %d\n", i+1, containerIndex+1);
+        } else {
+            containerIndex++;
+            if (containerIndex >= numContainers) {
+                printf("Not enough containers to load all items.\n");
+                return;
+            }
+            containers[containerIndex].currentWeight += items[i].weight;
+            printf("Item %d loaded into container %d\n", i+1, containerIndex+1);
+        }
+    }
+}
+
+int main() {
+    struct Item items[MAX_ITEMS];
+    struct Container containers[MAX_CONTAINERS];
+    int numItems, numContainers;
+
+    // Input the number of items
+    printf("Enter the number of items: ");
+    scanf("%d", &numItems);
+
+    // Input the weights of the items
+    printf("Enter the weights of the items:\n");
+    for (int i = 0; i < numItems; i++) {
+        printf("Item %d: ", i+1);
+        scanf("%d", &items[i].weight);
+    }
+
+    // Input the number of containers
+    printf("Enter the number of containers: ");
+    scanf("%d", &numContainers);
+
+    // Input the capacity of the containers
+    printf("Enter the capacity of the containers:\n");
+    for (int i = 0; i < numContainers; i++) {
+        printf("Container %d: ", i+1);
+        scanf("%d", &containers[i].capacity);
+        containers[i].currentWeight = 0;
+    }
+
+    // Load items into containers
+    loadContainers(items, numItems, containers, numContainers);
+
+    return 0;
+}
