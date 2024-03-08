@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_VERTICES 10
+
+int graph[MAX_VERTICES][MAX_VERTICES]; // Adjacency matrix representing the graph
+int numVertices; // Number of vertices in the graph
+int path[MAX_VERTICES]; // Array to store the Hamiltonian path
+bool visited[MAX_VERTICES]; // Array to track visited vertices
+
+// Function to check if a vertex can be added to the Hamiltonian path
+bool isSafe(int v, int pos) {
+    if (!graph[path[pos - 1]][v]) {
+        return false; // There is no edge between previous vertex and v
+    }
+    for (int i = 0; i < pos; i++) {
+        if (path[i] == v) {
+            return false; // Vertex v is already included in the path
+        }
+    }
+    return true;
+}
+
+// Function to recursively find the Hamiltonian path
+bool hamiltonianUtil(int pos) {
+    if (pos == numVertices) {
+        // If all vertices are included in the path, check if there is an edge from the last vertex to the first vertex
+        if (graph[path[pos - 1]][path[0]]) {
+            return true; // Hamiltonian circuit found
+        }
+        return false;
+    }
+
+    // Try different vertices as the next vertex of the path
+    for (int v = 1; v < numVertices; v++) {
+        if (isSafe(v, pos)) {
+            path[pos] = v;
+            if (hamiltonianUtil(pos + 1)) {
+                return true;
+            }
+            path[pos] = -1; // Backtrack
+        }
+    }
+    return false;
+}
+
+// Function to find and print the Hamiltonian circuit
+void hamiltonianCircuit() {
+    for (int i = 0; i < numVertices; i++) {
+        path[i] = -1; // Initialize path with -1
+    }
+    path[0] = 0; // Start from the first vertex
+
+    if (hamiltonianUtil(1)) {
+        printf("Hamiltonian Circuit found: ");
+        for (int i = 0; i < numVertices; i++) {
+            printf("%d ", path[i]);
+        }
+        printf("%d\n", path[0]); // Print the first vertex again to complete the circuit
+    } else {
+        printf("Hamiltonian Circuit does not exist.\n");
+    }
+}
+
+int main() {
+    // Input the number of vertices
+    printf("Enter the number of vertices in the graph: ");
+    scanf("%d", &numVertices);
+
+    // Input the adjacency matrix representing the graph
+    printf("Enter the adjacency matrix (%d x %d) representing the graph:\n", numVertices, numVertices);
+    for (int i = 0; i < numVertices; i++) {
+        for (int j = 0; j < numVertices; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    // Find and print the Hamiltonian circuit
+    hamiltonianCircuit();
+
+    return 0;
+}
