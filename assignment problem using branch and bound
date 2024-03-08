@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 10
+
+int costMatrix[MAX][MAX]; // Cost matrix representing the assignment costs
+int numWorkers;           // Number of workers (rows)
+int numTasks;             // Number of tasks (columns)
+
+bool assigned[MAX];       // Boolean array to track assigned tasks
+int assignment[MAX];      // Array to store the assignment
+
+int minCost = 0;          // Minimum cost of assignment
+
+// Function to calculate the minimum cost using the branch and bound algorithm
+void branchAndBound(int worker, int currentCost) {
+    if (worker == numWorkers) {
+        if (currentCost < minCost) {
+            minCost = currentCost;
+            for (int i = 0; i < numWorkers; i++) {
+                assignment[i] = assigned[i];
+            }
+        }
+        return;
+    }
+
+    for (int task = 0; task < numTasks; task++) {
+        if (!assigned[task]) {
+            assigned[task] = true;
+            branchAndBound(worker + 1, currentCost + costMatrix[worker][task]);
+            assigned[task] = false;
+        }
+    }
+}
+
+// Function to print the optimal assignment
+void printAssignment() {
+    printf("Optimal Assignment:\n");
+    for (int i = 0; i < numWorkers; i++) {
+        printf("Worker %d -> Task %d\n", i + 1, assignment[i] + 1);
+    }
+}
+
+int main() {
+    // Input the number of workers and tasks
+    printf("Enter the number of workers: ");
+    scanf("%d", &numWorkers);
+
+    printf("Enter the number of tasks: ");
+    scanf("%d", &numTasks);
+
+    // Input the cost matrix
+    printf("Enter the cost matrix (%d x %d):\n", numWorkers, numTasks);
+    for (int i = 0; i < numWorkers; i++) {
+        for (int j = 0; j < numTasks; j++) {
+            scanf("%d", &costMatrix[i][j]);
+        }
+    }
+
+    // Initialize assigned array and call the branch and bound algorithm
+    for (int i = 0; i < MAX; i++) {
+        assigned[i] = false;
+    }
+
+    branchAndBound(0, 0);
+
+    // Print the optimal assignment and minimum cost
+    printf("Minimum Cost: %d\n", minCost);
+    printAssignment();
+
+    return 0;
+}
