@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to print the reverse of a string using recursion
+void printReverse(char *str) {
+    // Base case: if the string is empty, return
+    if (*str == '\0') {
+        return;
+    }
+    
+    // Recursively call printReverse with the rest of the string
+    printReverse(str + 1);
+    
+    // Print the current character
+    printf("%c", *str);
+}
+
+int main() {
+    char str[100];
+    
+    // Input the string
+    printf("Enter a string: ");
+    scanf("%s", str);
+    
+    // Call the function to print the reverse
+    printf("Reverse of the string: ");
+    printReverse(str);
+    printf("\n");
+    
+    return 0;
+}
