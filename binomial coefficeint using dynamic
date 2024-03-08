@@ -1,0 +1,38 @@
+#include <stdio.h>
+// number of ways to find k elemet in n set
+// Function to calculate the binomial coefficient using dynamic programming
+int binomialCoeff(int n, int k) {
+    // Create a 2D array to store binomial coefficients
+    int C[n + 1][k + 1];
+
+    // Initialize base cases
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= k && j <= i; j++) { // Ensures k <= i for valid combinations
+            if (j == 0 || j == i) {
+                C[i][j] = 1;  // C(n, 0) = 1 and C(n, n) = 1
+            } else {
+                C[i][j] = C[i - 1][j - 1] + C[i - 1][j]; // DP formula
+            }
+        }
+    }
+
+    // Return the desired binomial coefficient
+    return C[n][k];
+}
+
+int main() {
+    int n, k;
+
+    printf("Enter the values of n and k (n >= 0, k >= 0): ");
+    scanf("%d %d", &n, &k);
+
+    if (k > n) {
+        printf("Invalid input: k cannot be greater than n.\n");
+        return 1; // Indicate error
+    }
+
+    int result = binomialCoeff(n, k);
+    printf("Binomial coefficient C(%d, %d) = %d\n", n, k, result);
+
+    return 0;
+}
