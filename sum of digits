@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+int main() {
+    int c, sum = 0, digit;
+    
+    printf("Enter a number: ");
+    scanf("%d", &c);
+    
+    // Loop to extract digits and calculate sum
+    while (c != 0) {
+        digit = c % 10;  // Extract the last digit
+        sum += digit;    // Add the digit to the sum
+        c /= 10;         // Remove the last digit
+    }
+    
+    printf("Sum of digits: %d\n", sum);
+    
+    return 0;
+}
